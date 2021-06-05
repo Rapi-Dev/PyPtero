@@ -65,3 +65,6 @@ Give a ⭐️ if this project helped you!
 Copyright © 2021 [Daftscientist](https://github.com/Daftscientist) | [Seniatical](https://github.com/Seniatical).<br />
 This project is [MIT](https://github.com/Rapi-Dev/PyPtero/blob/main/LICENSE) licensed.
 This project is owned by Rapi-Dev (Daftscientist & Saqib).
+
+## Notice
+This module is in early works, expect bugs and errors. Were trying to fix any errors which may occasionally popup. 
