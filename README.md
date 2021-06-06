@@ -32,7 +32,7 @@ pip install PyPtero
 
 ## Examples
 ```py
-from PyPtero.PyPtero.Sync import Pterodactyl
+from PyPtero.Sync import Pterodactyl
 
 ptero = Pterodactyl(
     url='Your panel URL here',
