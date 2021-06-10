@@ -40,6 +40,13 @@ class Pterodactyl(PteroSyncBase):
         # Define client now
         self.app = Application(self)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.session.close()
+        del self
+
     @property
     def users(self):
         return self.app.users
