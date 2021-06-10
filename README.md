@@ -32,17 +32,16 @@ pip install PyPtero
 
 ## Examples
 ```py
-from PyPtero import Pterodactyl, Client
+from PyPtero.Sync import Pterodactyl
 
-ptero = Pterodactyl('api-key-for-ptero', 'domain-for-ptero-api')
+client = Pterodactyl(url='Your panel url', admin_key='Your ptero api key (/admin/api)')
 
-## Want to update the credentials for all the modules
-ptero.update(api_key='New-api-key')
+client.users.create(username='Pyptero', password='Some super secret panel password')
 
-## Target a specific module, I will use Client
-ptero.update('Client', api_key='New-api-key')
-
-## Now Client has a different API KEY to all the previous modules!
+## OR
+with Pterodactyl(url='Your panel url', client_key='Your client key (/account/api)') as client:
+    details = client.details
+print(details)
 ```
 
 ## Author
