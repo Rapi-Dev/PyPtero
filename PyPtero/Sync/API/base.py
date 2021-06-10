@@ -30,14 +30,10 @@ class Route(object):
         if not self.PREPARED:
             self.__extend_uri(base)
 
-        headers = self.headers.copy()
-        headers['User-Agent'] = USER_AGENT
-
         unprepared_request = requests.Request(self.method,  self.route,
                                               data=self.payload,
-                                              headers=headers, **self.others)
+                                              headers=self.headers, **self.others)
         self.request = unprepared_request.prepare()
-
 
 class PteroSyncBase(object):
     def __init__(self, api_token: str, url: str, session: requests.Session) -> typing.NoReturn:
@@ -55,7 +51,9 @@ class PteroSyncBase(object):
         else:
             route.headers = dict(**route.headers, **required_header)
 
-        response: requests.Response = self.session.send(request=route.request)
+        route.prepare(self.url)
+
+        response: requests.Response = self.session.send(route.request)
         return response
 
     def get_headers(self):
@@ -63,6 +61,7 @@ class PteroSyncBase(object):
             'Authorization': 'Bearer {0}'.format(self.api_token),
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'User-Agent': USER_AGENT,
         }
         return headers
 
