@@ -2,6 +2,7 @@ r""" Handy utility methods to make using the API simpler """
 import typing
 import requests
 from ...constants import *
+from json import dumps
 
 class Route(object):
     def __init__(self, method: str, route: str, *, payload=None, headers=None, **others):
@@ -31,7 +32,7 @@ class Route(object):
             self.__extend_uri(base)
 
         unprepared_request = requests.Request(self.method,  self.route,
-                                              data=self.payload,
+                                              data=dumps(self.payload),
                                               headers=self.headers, **self.others)
         self.request = unprepared_request.prepare()
 

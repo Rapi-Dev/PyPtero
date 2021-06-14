@@ -15,3 +15,7 @@ class MissingAPIKey(BaseError):
 class NotFound(BaseError):
     r""" Raised when a recourse cannot be found e.g. a user """
     pass
+
+class MissingRequiredArgument(BaseError):
+    r""" Raised when you make a request with a missing attribute .e.g username """
+    pass

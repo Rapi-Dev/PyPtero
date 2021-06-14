@@ -1,27 +1,43 @@
 from pydantic import BaseModel
 from requests import Response
 from ..API.base import Route
+from ...exceptions import *
 
-__attrs__ = {'email', 'username', 'first_name', 'last_name', 'language', 'password'}
+__attrs__ = {
+    'email', 'username', 'first_name', 'last_name', 'language', 'password',
+    'external_id', 'root_admin',
+}
+
+__reqattr__ = {
+    'email', 'username', 'first_name', 'last_name'
+}
 
 class PterodactylUserModel(BaseModel):
     id: int
-    external_id: str
     uuid: str
     username: str
     email: str
     first_name: str
     last_name: str
-    language: str
-    root_admin: bool = False
-    _2fa: bool = False
     created_at: str
     updated_at: str
+
+    external_id: str = None
+    language: str = 'en'
+    root_admin: bool = False
+    _2fa: bool = False
     servers: list = []
+    recourse: str = ''
 
 class PterodactylUser(object):
     def __init__(self, json: dict, base):
-        self.object = PterodactylUserModel(**json['attributes'])
+        if json.get('meta'):
+            meta = json['meta'].get('recourse')
+        else:
+            meta = ''
+        meta = meta or ''
+
+        self.object = PterodactylUserModel(**json['attributes'], meta=meta)
         self.base = base
         self.json = json
 
@@ -51,4 +67,7 @@ class PterodactylUser(object):
         return super().__new__(self.json, self.base)
 
     def __getattr__(self, item):
-        return self.object.item
+        if item == '2fa':
+            item = '_2fa'
+
+        return getattr(self.object, item, None)
