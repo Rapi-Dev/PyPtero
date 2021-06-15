@@ -15,7 +15,7 @@ ptero = Pterodactyl(
 #### Arguments
 `url`(**str**): The url for your panel can include `/api` at the end or not
 
-`api_key`(**typing.Union[list, str]**):\
+`api_key`(**typing.Union[list, str]**):
 > A list or string for your panels API key\
 > If providing a list make sure its in the order of `[client_key, admin_key]`\
 > For a string it will become your admin key
@@ -24,7 +24,7 @@ ptero = Pterodactyl(
 `client_key`(**str**): The API key for YOUR account - can be found at `/account/api`
 
 `use_ssl`(**bool**): Checks if your panel url is following the provided scheme\
-> True -> Panel URL must start with `https`\
+> True -> Panel URL must start with `https`
 > False -> Panel URL must start with `http`
                
 > Default is `True`
