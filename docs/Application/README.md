@@ -30,11 +30,11 @@ ptero = Pterodactyl(
 > Default is `True`
 
 #### Attributes
-`url`(**str**): The url which was provided to the client
-`ssl`(**bool**): Whether your using SSL or not
-`session`(**!requests.Session**): The session which the client will make requests off of
-`admin_key`(**str**): The panel API key - Can be None if not provided
-`client_key`(**str**): Your accounts API key
-`app`(**!PyPtero.Sync.API.Application.Application**): API Application for your app
-`users`(**!PyPtero.Sync.API.Application.users.Users**): Everything for managing your users
+`url`(**str**): The url which was provided to the client\
+`ssl`(**bool**): Whether your using SSL or not\
+`session`(**!requests.Session**): The session which the client will make requests off of\
+`admin_key`(**str**): The panel API key - Can be None if not provided\
+`client_key`(**str**): Your accounts API key\
+`app`(**!PyPtero.Sync.API.Application.Application**): API Application for your app\
+`users`(**!PyPtero.Sync.API.Application.users.Users**): Everything for managing your users\
 `nodes`(**!PyPtero.Sync.API.Application.nodes.Nodes**): Everything for managing your nodes
