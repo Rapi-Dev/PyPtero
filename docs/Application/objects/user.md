@@ -30,14 +30,14 @@ user = user.update(password='Some Super Secret Password')
 A new user object with the updated attributes
 
 ###### Arguments
-email(**str**) - Update the email for the user\
-username(**str**) - Update the username for the user\
-first_name(**str**) - Update the first name for the user\
-last_name(**str**) - Update the last name for the user\
-language(**str**) - Update the language for the user\
-password(**str**) - Update the password for the user\
-external_id(**str**) - Update the external ID for the user\
-root_admin(**bool**) - Update root admin status for the user
+`email`(**str**) - Update the email for the user\
+`username`(**str**) - Update the username for the user\
+`first_name`(**str**) - Update the first name for the user\
+`last_name`(**str**) - Update the last name for the user\
+`language`(**str**) - Update the language for the user\
+`password`(**str**) - Update the password for the user\
+`external_id`(**str**) - Update the external ID for the user\
+`root_admin`(**bool**) - Update root admin status for the user
 
 ##### Copy - `User.copy()`
 > Returns a user new user object which is identical to your current user
