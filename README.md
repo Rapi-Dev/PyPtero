@@ -26,8 +26,12 @@
 
 ## Install
 
-```sh
-pip3 install PyPtero
+```
+Windows
+pip install -U https://github.com/Rapi-Dev/PyPtero/
+
+Linux
+pip3 install -U https://github.com/Rapi-Dev/PyPtero/
 ```
 
 ## Examples
