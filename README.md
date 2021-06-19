@@ -41,7 +41,7 @@ from PyPtero.Sync import Pterodactyl
 
 client = Pterodactyl(url='My Panel URL', admin_key='My application token')
 
-user = client.users.create(
+user = client.create_user(
     username='New-User', password='New-User',
     first_name='Firstname', last_name='Lastname',
     email='some@email.com'
