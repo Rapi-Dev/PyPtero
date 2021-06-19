@@ -23,6 +23,7 @@
 - Ease-of-access
 - Includes Everything
 - Async And Sync.
+- Use of caching allows less requests to the API, Cache is updated everytime you fetch!
 
 ## Install
 
