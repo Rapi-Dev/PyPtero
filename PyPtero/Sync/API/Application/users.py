@@ -118,7 +118,7 @@ class Users(PteroSyncBase):
 
         return filtered[index]
 
-    def create(self, **attrs):
+    def create_user(self, **attrs):
         unwanted_keys = [i for i in attrs.keys() if i not in __attrs__]
         if unwanted_keys:
             raise TypeError('Got unexpected argument(s), %r - Please choose from %r' % (
