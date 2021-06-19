@@ -3,6 +3,10 @@ from ..base import PteroSyncBase, Route
 import typing
 from ....exceptions import *
 
+params = {
+    'servers': True
+}
+
 @typing.final
 class Users(PteroSyncBase):
     def __init__(self, pterodactyl):
@@ -21,11 +25,19 @@ class Users(PteroSyncBase):
         self._update()
 
     def _update(self):
-        route = Route('GET', '/application/users')
+        route = Route('GET', '/application/users', params=params)
         response = super().request(route)
         response.raise_for_status()
 
         json = response.json()
+
+        meta = json.get('meta')
+
+        if meta and meta.get('pagination'):
+            pages = meta['pagination']['total_pages']
+            current_page = meta['pagination']['current_page']
+        else:
+            pages = None
 
         for user in json['data']:
             user_ = PterodactylUser(user, self)
@@ -35,39 +47,76 @@ class Users(PteroSyncBase):
                     user_.object.id: user_
                 }
             )
+        if pages:
+            for page_number in range(current_page, (pages + 1)):
+                route = Route('GET', '/application/users/?page=%s' % page_number, params=params)
+                response = super().request(route)
+                response.raise_for_status()
+
+                json = response.json()
+
+                for user in json['data']:
+                    user_ = PterodactylUser(user, self)
+
+                    self._cache.update(
+                        {
+                            user_.object.id: user_
+                        }
+                    )
 
     def get_user(self, id: int):
         return self._cache.get(id)
 
     def fetch_user(self, id: int, *, external: bool = False):
         if not external:
-            route = f'/application/users/{id}?servers'
+            route = f'/application/users/{id}'
         else:
-            route = f'/application/users/external/{id}?servers'
-        route = Route('GET', route)
+            route = f'/application/users/external/{id}'
+        route = Route('GET', route, params=params)
 
         response = super().request(route)
         response.raise_for_status()
 
         json = response.json()
-        user = PterodactylUser(json['attributes'])
+        user = PterodactylUser(json, self)
 
         self._cache.update({user.object.id: user})
 
         return user
 
-    def get_by_attribute(self, value: str, attribute: str, *, index: int = 0):
+    def get_by_attribute(self, attribute: str, value: str, *, index: int = 0):
         def _(_):
             return getattr(_[1], attribute, None) == value
-        results = list(filter(_, self._cache.items()))
+        filtered = list(filter(_, self._cache.items()))
 
-        if not results:
+        if not filtered or len(filtered) < index:
             return None
 
-        try:
-            return results[index]
-        except IndexError:
-            return results[0]
+        return filtered[index]
+
+    def fetch_by_attribute(self, attribute: str, value: str, *, index: int = 0):
+        def _(_):
+            return getattr(_[1], attribute, None) == value
+
+        route = f'/application/users?filter[%s]=%s' % (attribute, value)
+
+        route = Route('GET', route, params=params)
+        response = super().request(route)
+        response.raise_for_status()
+
+        json = response.json()
+        users = []
+        for user in json['data']:
+            user = PterodactylUser(user, self)
+            users.append(user)
+            self._cache.update({user.id: user})
+
+        filtered = list(filter(_, users))
+
+        if not filtered or len(filtered) < index:
+            return None
+
+        return filtered[index]
 
     def create(self, **attrs):
         unwanted_keys = [i for i in attrs.keys() if i not in __attrs__]
