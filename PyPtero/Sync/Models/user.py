@@ -1,7 +1,6 @@
 from pydantic import BaseModel
-from requests import Response
 from ..API.base import Route
-from ...exceptions import *
+import datetime
 
 __attrs__ = {
     'email', 'username', 'first_name', 'last_name', 'language', 'password',
@@ -12,6 +11,7 @@ __reqattr__ = {
     'email', 'username', 'first_name', 'last_name'
 }
 
+
 class PterodactylUserModel(BaseModel):
     id: int
     uuid: str
@@ -19,23 +19,27 @@ class PterodactylUserModel(BaseModel):
     email: str
     first_name: str
     last_name: str
-    created_at: str
-    updated_at: str
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
 
     external_id: str = None
     language: str = 'en'
     root_admin: bool = False
     _2fa: bool = False
     servers: list = []
-    recourse: str = ''
+    meta = {}
+
 
 class PterodactylUser(object):
     def __init__(self, json: dict, base):
         if json.get('meta'):
-            meta = json['meta'].get('recourse')
+            meta = json['meta']
         else:
             meta = ''
-        meta = meta or ''
+        meta = meta or {}
+
+        json['attributes']['created_at'] = datetime.datetime.fromisoformat(json['attributes']['created_at'])
+        json['attributes']['updated_at'] = datetime.datetime.fromisoformat(json['attributes']['updated_at'])
 
         self.object = PterodactylUserModel(**json['attributes'], meta=meta)
         self.base = base
