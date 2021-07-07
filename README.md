@@ -29,10 +29,10 @@
 
 ```
 Windows
-pip install -U https://github.com/Rapi-Dev/PyPtero/
+pip install -U git+https://github.com/Rapi-Dev/PyPtero/
 
 Linux
-pip3 install -U https://github.com/Rapi-Dev/PyPtero/
+pip3 install -U git+https://github.com/Rapi-Dev/PyPtero/
 ```
 
 ## Examples
